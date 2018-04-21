@@ -7,10 +7,11 @@
   "version": "0.0.1",
   "description": "What am I about?",
   "scripts": {
-    "start": "node server.js"
+    "start": "node app.js"
   },
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "mongodb": "*"
   },
   "engines": {
     "node": "9.x"

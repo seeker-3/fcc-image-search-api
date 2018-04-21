@@ -1,3 +1,6 @@
+const url = process.env.MONGO_URI;
+const col = process.env.COLLECTION;
+
 const express = require('express')
 const app = express()
 
