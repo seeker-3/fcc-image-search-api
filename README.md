@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Welcome to the Glitch BETA
 ==========================
 
@@ -25,3 +26,6 @@ Made by [Fog Creek](https://fogcreek.com/)
 -------------------
 
 \ ゜o゜)ノ
+=======
+# fcc-image-search-api
+>>>>>>> e87aa25ffa51273ef412552b3a9e52ae7d179546
