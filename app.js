@@ -11,8 +11,12 @@ const client = new GoogleImages(ID, key);
 const express = require('express')
 const app = express()
 
-app.use(express.static('public'))
+//app.use(express.static('public'))
 app.listen(process.env.PORT || 3000);
+
+client.search('Steve Angello').then(images => {
+  log(images)
+});
 
 
 // MongoClient.connect(url, (err, client) => {
