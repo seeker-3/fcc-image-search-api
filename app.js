@@ -4,19 +4,18 @@ const col = process.env.COLLECTION;
 const ID = process.env.CSE_ID;
 const key = process.env.API_KEY;
 
-
 const {MongoClient} = require('mongodb');
 const GoogleImages = require('google-images');
-const client = new GoogleImages(ID, key);
+const client = new GoogleImages(ID, key);log(client);
 const express = require('express')
 const app = express()
 
 //app.use(express.static('public'))
 app.listen(process.env.PORT || 3000);
 
-client.search('Steve Angello').then(images => {
-  log(images)
-});
+// client.search('Steve Angello').then(images => {
+//   log(images)
+// });
 
 
 // MongoClient.connect(url, (err, client) => {
