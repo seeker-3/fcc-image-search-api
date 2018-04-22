@@ -7,6 +7,7 @@ const key = process.env.API_KEY;
 
 const {MongoClient} = require('mongodb');
 const GoogleImages = require('google-images');
+const client = new GoogleImages(ID, key);
 const express = require('express')
 const app = express()
 
