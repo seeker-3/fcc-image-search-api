@@ -12,8 +12,7 @@
   "dependencies": {
     "express": "^4.16.3",
     "mongodb": "*",
-    "google-images": "*",
-    "node-google-image-search": "*"
+    "google-search": "*"
   },
   "engines": {
     "node": "9.x"
