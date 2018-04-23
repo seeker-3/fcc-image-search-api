@@ -1,8 +1,10 @@
 const log = console.log;
-const url = process.env.MONGO_URI;
+const db_url = process.env.MONGO_URI;
 const col = process.env.COLLECTION;
 const ID = process.env.ID;
 const KEY = process.env.KEY;
+
+const url = require('url');
 
 
 const GoogleImages = require('google-images');
@@ -20,4 +22,8 @@ const app = express()
 
 app.listen(process.env.PORT || 3000);
 
-app.get(')
+app.get('*', (req, res) => {
+  log(req.url.slice(1));
+  log(url.parse(req.query).pathname);
+  res.end();
+});
