@@ -11,7 +11,7 @@ const {MongoClient} = require('mongodb');
 const express = require('express')
 const app = express()
 
-//client.search('pizza').then(images => log(images));
+//client.search('cows').then(images => log(images));
 
 app.listen(process.env.PORT || 3000);
 //app.use(express.static('public'))
