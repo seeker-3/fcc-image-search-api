@@ -11,13 +11,13 @@ const {MongoClient} = require('mongodb');
 const express = require('express')
 const app = express()
 
-//client.search('cows').then(images => log(images));
-
-app.listen(process.env.PORT || 3000);
+//client.search('cows', {page: 40}).then(images => log(images));
 //app.use(express.static('public'))
 // MongoClient.connect(url, (err, client) => {
 //   if (err) throw err;
 //   client.close();
 // });
 
+app.listen(process.env.PORT || 3000);
 
+app.get(')
