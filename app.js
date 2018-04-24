@@ -6,12 +6,12 @@ const KEY = process.env.KEY;
 
 const url = require('url');
 const pretty = require('express-prettify');
+
 const client = new (require('google-images'))(ID, KEY);
 const {MongoClient} = require('mongodb');
 const app = require('express')();
-app.listen(process.env.PORT || 3000);
 
-app.use(pretty({ query: 'pretty' }));
+app.use(pretty({query: 'pretty'}));
 
 app.get('/', (req, res) => res.end());
 
@@ -50,3 +50,5 @@ app.get('/search/*', (req, res) => {
     });
   };
 });
+
+app.listen(process.env.PORT || 3000);
