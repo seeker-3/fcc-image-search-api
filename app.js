@@ -22,10 +22,19 @@ app.get('/', (req, res) => res.end());
 app.get('/history', (req, res) => res.end());
 
 
-// app.get('/search/*', (req, res) => {
-//   const query = url.parse(req.url).pathname.slice(1);
-//   client.search(query, {page: req.query.offset || 1}).then(images => {
-//     log(query);
-//     res.json(images);
-//   });
-// });
+app.get('/search/*', (req, res) => {
+  const query = url.parse(req.url).pathname.slice(1);
+  client.search(query, {page: req.query.offset || 1}).then(images => {
+    res.json(images);
+    store();
+  });
+  
+  const store = () => {
+    MongoClient.connect(db_url, (client) => {
+      client.db().collection(col).insert({
+        query: query,
+        date: new 
+      });
+    });
+  };
+});
