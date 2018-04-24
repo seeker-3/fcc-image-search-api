@@ -10,10 +10,11 @@ const client = new (require('google-images'))(ID, KEY);
 const {MongoClient} = require('mongodb');
 const app = require('express')();
 
-function getClient(callback) {
+function getClient(callback, next) {
   MongoClient.connect(db_url, (err, client) => {
     if (err) throw err;
     callback(client);
+    next();
   });
 }
 
@@ -21,15 +22,15 @@ function getClient(callback) {
 app.get('/', (req, res) => res.end());
 
 app.get('/history', (req, res) => {
-  MongoClient.connect(db_url, (err, client) => {
-    if (err) throw err;
-    client.db().collection(col).find({}).toArray((err, docs) => {
-      res.json(docs.sort((a, b) => new Date(b.date) - new Date(a.date)).map(x => ({
-        query: x.query,
-        when: x.date,
-      })).slice(0,30));
-      client.close();
-    });
+  var cleint;
+  getClient(c => client = c, find);
+  const find = () =>
+  client.db().collection(col).find({}).toArray((err, docs) => {
+    res.json(docs.sort((a, b) => new Date(b.date) - new Date(a.date)).map(x => ({
+      query: x.query,
+      when: x.date,
+    })).slice(0,30));
+    client.close();
   });
 });
 
@@ -39,21 +40,16 @@ app.get('/search/*', (req, res) => {
   client.search(query, {page: req.query.offset || 1}).then(images => {
     res.json(images);
     var client;
-    getClient(c => {
-      client = c;
-    });
-    insert();
+    getClient(c => client = c, insert);
   });
   
-  const insert = () => {
-    client.db().collection(col).insert({
-      query: query,
-      date: new Date,
-    }, err => {
-      if (err) throw err;
-      client.close();
-    });
-  };
+  const insert = () => client.db().collection(col).insert({
+    query: query,
+    date: new Date,
+  }, err => {
+    if (err) throw err;
+    client.close();
+  });
 });
 
 app.listen(process.env.PORT || 3000);
