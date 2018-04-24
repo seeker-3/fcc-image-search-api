@@ -10,6 +10,13 @@ const client = new (require('google-images'))(ID, KEY);
 const {MongoClient} = require('mongodb');
 const app = require('express')();
 
+function getClient(callback) {
+  MongoClient.connect(db_url, (err, client) => {
+    if (err) throw err;
+    callback(client);
+  });
+}
+
 
 app.get('/', (req, res) => res.end());
 
@@ -31,19 +38,20 @@ app.get('/search/*', (req, res) => {
   
   client.search(query, {page: req.query.offset || 1}).then(images => {
     res.json(images);
-    store();
+    var client;
+    getClient(c => {
+      client = c;
+    });
+    insert();
   });
   
-  const store = () => {
-    MongoClient.connect(db_url, (err, client) => {
+  const insert = () => {
+    client.db().collection(col).insert({
+      query: query,
+      date: new Date,
+    }, err => {
       if (err) throw err;
-      client.db().collection(col).insert({
-        query: query,
-        date: new Date,
-      }, err => {
-        if (err) throw err;
-        client.close();
-      });
+      client.close();
     });
   };
 });
