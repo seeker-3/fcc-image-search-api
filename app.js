@@ -5,9 +5,7 @@ const ID = process.env.ID;
 const KEY = process.env.KEY;
 
 const url = require('url');
-
-
-const client = new require('google-images')(ID, KEY);
+const client = new (require('google-images'))(ID, KEY);
 const {MongoClient} = require('mongodb');
 const app = require('express')();
 
