@@ -13,7 +13,7 @@ const app = require('express')();
 function getClient(callback, next) {
   MongoClient.connect(db_url, (err, client) => {
     if (err) throw err;
-    callback(client);log(next)
+    callback(client);
     next();
   });
 }
@@ -22,17 +22,16 @@ function getClient(callback, next) {
 app.get('/', (req, res) => res.end());
 
 app.get('/history', (req, res) => {
-  var client; getClient(c => client = c, find);
-  
-  function find() {
+  var client;
+  getClient(c => client = c, () =>
     client.db().collection(col).find({}).toArray((err, docs) => {
       res.json(docs.sort((a, b) => new Date(b.date) - new Date(a.date)).map(x => ({
         query: x.query,
         when: x.date,
       })).slice(0,30));
       client.close();
-    });
-  }
+    })
+  );
 });
 
 app.get('/search/*', (req, res) => {
