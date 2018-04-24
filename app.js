@@ -9,22 +9,14 @@ const client = new (require('google-images'))(ID, KEY);
 const {MongoClient} = require('mongodb');
 const app = require('express')();
 
-MongoClient.connect(db_url, (err, client) => {
-  if (err) throw err;
-  client.db().collection(col).find({}, (err, res) => {
-    res.json(res);
-    client.close();
-  });
-});
-
 app.listen(process.env.PORT || 3000);
 
 app.get('/', (req, res) => res.end());
 app.get('/history', (req, res) => {
   MongoClient.connect(db_url, (err, client) => {
     if (err) throw err;
-    client.db().collection(col).find({}, (err, res) => {
-      res.json(res);
+    client.db().collection(col).find({}).toArray((err, docs) => {
+      res.json(docs);
       client.close();
     });
   });
@@ -32,7 +24,7 @@ app.get('/history', (req, res) => {
 
 
 app.get('/search/*', (req, res) => {
-  const query = url.parse(req.url).pathname.slice(1);
+  const query = url.parse(req.url).pathname.slice(8);
   
   client.search(query, {page: req.query.offset || 1}).then(images => {
     res.json(images);
@@ -40,7 +32,8 @@ app.get('/search/*', (req, res) => {
   });
   
   const store = () => {
-    MongoClient.connect(db_url, (client) => {
+    MongoClient.connect(db_url, (err, client) => {
+      if (err) throw err;
       client.db().collection(col).insert({
         query: query,
         date: new Date,
