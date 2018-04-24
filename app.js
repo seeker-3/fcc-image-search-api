@@ -12,16 +12,20 @@ const app = require('express')();
 app.listen(process.env.PORT || 3000);
 
 app.get('/', (req, res) => res.end());
+
 app.get('/history', (req, res) => {
   MongoClient.connect(db_url, (err, client) => {
     if (err) throw err;
     client.db().collection(col).find({}).toArray((err, docs) => {
+      docs.sort((a, b) => new Date(b.date) - new Date(a.date)).map(x => ({
+        when: x.date,
+        query: x.query,
+      }));
       res.json(docs);
       client.close();
     });
   });
 });
-
 
 app.get('/search/*', (req, res) => {
   const query = url.parse(req.url).pathname.slice(8);
