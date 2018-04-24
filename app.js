@@ -7,11 +7,9 @@ const KEY = process.env.KEY;
 const url = require('url');
 
 
-const GoogleImages = require('google-images');
-const client = new GoogleImages(ID, KEY);
+const client = new require('google-images')(ID, KEY);
 const {MongoClient} = require('mongodb');
-const express = require('express')
-const app = express()
+const app = require('express')();
 
 //app.use(express.static('public'))
 // MongoClient.connect(url, (err, client) => {
@@ -23,10 +21,10 @@ app.listen(process.env.PORT || 3000);
 
 app.get('/', (req, res) => res.end());
 
-app.get('*', (req, res) => {
-  const query = url.parse(req.url).pathname.slice(1);
-  client.search(query, {page: req.query.offset || 1}).then(images => {
-    log(query);
-    res.json(images);
-  });
-});
+// app.get('*', (req, res) => {
+//   const query = url.parse(req.url).pathname.slice(1);
+//   client.search(query, {page: req.query.offset || 1}).then(images => {
+//     log(query);
+//     res.json(images);
+//   });
+// });
