@@ -5,13 +5,11 @@ const ID = process.env.ID;
 const KEY = process.env.KEY;
 
 const url = require('url');
-const pretty = require('express-prettify');
 
 const client = new (require('google-images'))(ID, KEY);
 const {MongoClient} = require('mongodb');
 const app = require('express')();
 
-app.use(pretty({query: 'pretty'}));
 
 app.get('/', (req, res) => res.end());
 
@@ -19,11 +17,10 @@ app.get('/history', (req, res) => {
   MongoClient.connect(db_url, (err, client) => {
     if (err) throw err;
     client.db().collection(col).find({}).toArray((err, docs) => {
-      (docs.sort((a, b) => new Date(b.date) - new Date(a.date)).map(x => ({
-        when: x.date,
+      res.json(docs.sort((a, b) => new Date(b.date) - new Date(a.date)).map(x => ({
         query: x.query,
-      })));
-      res.json(docs);
+        when: x.date,
+      })).slice(0,10));
       client.close();
     });
   });
