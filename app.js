@@ -20,7 +20,7 @@ app.get('/history', (req, res) => {
       res.json(docs.sort((a, b) => new Date(b.date) - new Date(a.date)).map(x => ({
         query: x.query,
         when: x.date,
-      })).slice(0,10));
+      })).slice(0,30));
       client.close();
     });
   });
